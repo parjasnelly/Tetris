@@ -191,8 +191,11 @@ var peca;
 var tabuleiro = [];
 
 var inicioDescida;
+var tempoDescida = 1000;
 var fimDeJogo = false;
-
+var scores = 0;
+var level = 1;
+var linhasCheias = 0;
 var tela = document.getElementById("tela");
 var c = tela.getContext("2d");
 
@@ -263,8 +266,8 @@ function gerarPeca(){
 function descerPeca(){
     var agora = Date.now();
     var delta = agora - inicioDescida;
-	//aumento do tempo de descida
-    if (delta > 500) {
+	//tempo de descida com variavel
+    if (delta > tempoDescida-level) {
         moverAbaixo();
         inicioDescida = Date.now();
     }
@@ -380,6 +383,12 @@ function travarPeca(){
             for (var j = 0; j < COLUNA; j++) {
                 tabuleiro[0][j] = VAGO;
             }
+            linhasCheias++;
+            if(linhasCheias==10){
+                level++
+                linhasCheias=0;
+            }
+            scores+=100;
         }
     }
 	
@@ -422,6 +431,8 @@ function controlarPeca(evento) {
             inicioDescida = Date.now();
         } else if (tecla == 40) {
             moverAbaixo();
+            //bonus de pontos para a descida acelerada
+            scores++;
         }
     }
 }
