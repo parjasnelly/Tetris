@@ -10,9 +10,7 @@
         height: 90vh;
     }
 </style>
-<div id="score"></div>
-<div id="level"></div>
-<canvas id="tela" width="300" height="600"></canvas>
+<canvas id="tela" width="900" height="600"></canvas>
 <script>
 /*
    Jogo: Tetris
@@ -245,17 +243,21 @@ function desenharQuadrado(x, y, cor){
         c.strokeText("Game over!", tela.width/2, tela.height/2);
         c.fillText("Game over!", tela.width/2, tela.height/2);
     }
-    // exibe os scroes(provisório)
-    document.getElementById('score').innerText = scores;
-    document.getElementById('level').innerText = level;
-
+    // exibição de scores e level
+    c.fillStyle = "#202028";
+    c.fillRect(1, 1, 298,150 );
+    c.font = "25px Comic Sans MS";
+    c.fillStyle = "white";
+    c.fillText("Scores:" + scores , 10, 45);
+    c.fillText("Level:" + level , 10, 90);
+    c.fillText("Linhas eliminadas: " + lCTotal , 10, 135);
 
     c.fillStyle = cor;
 
-    c.fillRect(x*TAMANHO, y*TAMANHO, TAMANHO, TAMANHO);
+    c.fillRect(x*TAMANHO+300, y*TAMANHO, TAMANHO, TAMANHO);
 
     c.strokeStyle = "black";
-    c.strokeRect(x*TAMANHO, y*TAMANHO, TAMANHO, TAMANHO);
+    c.strokeRect(x*TAMANHO+300, y*TAMANHO, TAMANHO, TAMANHO);
 }
 
 function gerarPeca(){
