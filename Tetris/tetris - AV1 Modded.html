@@ -2,13 +2,16 @@
 <style>
     body{
         background: #202028;
+        color: #ffffff;
         text-align: center;
     }
     canvas{
-        border: solid darkgray;
+        border: solid #fff;
         height: 90vh;
     }
 </style>
+<div id="score"></div>
+<div id="level"></div>
 <canvas id="tela" width="300" height="600"></canvas>
 <script>
 /*
@@ -196,6 +199,7 @@ var fimDeJogo = false;
 var scores = 0;
 var level = 1;
 var linhasCheias = 0;
+var lCTotal = 0;
 var tela = document.getElementById("tela");
 var c = tela.getContext("2d");
 
@@ -241,7 +245,13 @@ function desenharQuadrado(x, y, cor){
         c.strokeText("Game over!", tela.width/2, tela.height/2);
         c.fillText("Game over!", tela.width/2, tela.height/2);
     }
+    // exibe os scroes(provisório)
+    document.getElementById('score').innerText = scores;
+    document.getElementById('level').innerText = level;
+
+
     c.fillStyle = cor;
+
     c.fillRect(x*TAMANHO, y*TAMANHO, TAMANHO, TAMANHO);
 
     c.strokeStyle = "black";
@@ -368,30 +378,54 @@ function travarPeca(){
 
     for (var i = 0; i < LINHA; i++) {
         var linhaCheia = true;
-		
+
         for (var j = 0; j < COLUNA; j++) {
             linhaCheia = linhaCheia && (tabuleiro[i][j] != VAGO);
         }
-		
+
+     if(linhaCheia){
+         linhasCheias++
+     }
+    }
+    if(linhasCheias==1){
+        scores+=(100*level);
+    }
+    if(linhasCheias==2){
+        scores+=(300*level);
+    }
+    if(linhasCheias==3){
+        scores+=(500*level);
+    }
+    if(linhasCheias==4){
+        scores+=(800*level);
+    }
+    lCTotal += linhasCheias;
+    linhasCheias=0;
+    if(lCTotal>=10){
+        level++
+        lCTotal-=10;
+    }
+    for (var i = 0; i < LINHA; i++) {
+        var linhaCheia = true;
+
+        for (var j = 0; j < COLUNA; j++) {
+            linhaCheia = linhaCheia && (tabuleiro[i][j] != VAGO);
+        }
+
+
         if (linhaCheia) {
             for (var y = i; y > 1; y--) {
                 for (var j = 0; j < COLUNA; j++) {
                     tabuleiro[y][j] = tabuleiro[y-1][j];
                 }
             }
-			
+
             for (var j = 0; j < COLUNA; j++) {
                 tabuleiro[0][j] = VAGO;
             }
-            linhasCheias++;
-            if(linhasCheias==10){
-                level++
-                linhasCheias=0;
-            }
-            scores+=100;
         }
     }
-	
+
     desenharTabuleiro();
 }
 
