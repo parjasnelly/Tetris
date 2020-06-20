@@ -176,7 +176,6 @@ const TAMANHO = 30;
 const VAGO = "black";
 // Carrega os efeitos sonoros
 var musica = document.getElementById("musica");
-musica.play();
 const levelUp= new Audio();
 levelUp.src = "./sons/levelUp.wav";
 
@@ -199,7 +198,7 @@ const tetris = new Audio();
 tetris.src = "./sons/tetris.wav";
 
 var peca;
-var tabuleiro = [];
+var tabuleiro = [0];
 var cont = 1;
 var inicioDescida;
 var tempoDescida = 1000;
@@ -207,18 +206,16 @@ var fimDeJogo = false;
 var scores = 0;
 var level = 1;
 var linhasCheias = 0;
-var lCTotal = 0;
 var linhasApagadas = 0;
 var tela = document.getElementById("tela");
 var c = tela.getContext("2d");
 var proxPc = Math.floor(Math.random() * PECAS.length);
-var z = 0;
-var s = 0;
-var t = 0;
-var o = 0;
-var l = 0;
-var i = 0;
-var j = 0;
+var pecas = [];
+// faz um "parseInt no vetor contador de peças"
+for(i=0; i<7;i++){
+    pecas[i]=0;
+}
+
 onkeydown = controlarPeca;
 
 iniciarTabuleiro();
@@ -230,7 +227,6 @@ gerarPeca();
 inicioDescida = Date.now();
 
 descerPeca();
-
 
 // Sub-rotinas (funções)
 
@@ -257,127 +253,10 @@ function desenharQuadrado(x, y, cor){
         musica.pause();
         musica.src = "./sons/ranking.mp3"
         gameOver.play();
-        // escreve o game over
-        c.fillStyle = "#202028";
-        c.fillRect(1, 1, 298, 150);
-        c.fillStyle = "#1C1C1C";
-        c.fillRect(300, 200, 300, 350);
-        c.textAlign = "center";
-        c.font = "30px Comic Sans MS";
-        c.fillStyle = "white";
-
-        c.strokeText("Game over!", tela.width/2, (tela.height/2)-40);
-        c.fillText("Game over!", tela.width/2, (tela.height/2)-40);
-        c.font = "20px Comic Sans MS";
-        c.fillText("Level máximo alcançado: "+level, tela.width/2, (tela.height/2)-10);
-        //Z
-
-        c.strokeText("Peças Z: "+z, (tela.width/2)-50, (tela.height/2)+30);
-        c.fillText("Peças Z: "+z, (tela.width/2)-50, (tela.height/2)+30);
-        c.fillStyle = "#FFE138";
-        c.beginPath();
-        c.moveTo(((tela.width/2)+20),((tela.height/2)+10));
-        c.lineTo(((tela.width/2)+20),((tela.height/2)+20));
-        c.lineTo(((tela.width/2)+30),((tela.height/2)+20));
-        c.lineTo(((tela.width/2)+30),((tela.height/2)+30));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+30));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+20));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+20));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+10));
-        c.fill();
-        c.closePath();
-        //S
-        c.fillStyle = "white";
-        c.strokeText("Peças S: "+s, (tela.width/2)-50, (tela.height/2)+60);
-        c.fillText("Peças S: "+s, (tela.width/2)-50, (tela.height/2)+60);
-        c.fillStyle = "#FF8E0D";
-        c.beginPath();
-        c.moveTo(((tela.width/2)+20),((tela.height/2)+50));
-        c.lineTo(((tela.width/2)+20),((tela.height/2)+60));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+60));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+50));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+50));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+40));
-        c.lineTo(((tela.width/2)+30),((tela.height/2)+40));
-        c.lineTo(((tela.width/2)+30),((tela.height/2)+50));
-        c.fill();
-        c.closePath();
-        //T
-        c.fillStyle = "white";
-        c.strokeText("Peças T: "+t, (tela.width/2)-50, (tela.height/2)+90);
-        c.fillText("Peças T: "+t, (tela.width/2)-50, (tela.height/2)+90);
-        c.fillStyle = "#FF0D72";
-        c.beginPath();
-        c.moveTo(((tela.width/2)+20),((tela.height/2)+80));
-        c.lineTo(((tela.width/2)+20),((tela.height/2)+90));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+90));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+80));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+80));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+70));
-        c.lineTo(((tela.width/2)+30),((tela.height/2)+70));
-        c.lineTo(((tela.width/2)+30),((tela.height/2)+80));
-        c.fill();
-        c.closePath();
-        //O
-        c.fillStyle = "white";
-        c.strokeText("Peças O: "+o, (tela.width/2)-50, (tela.height/2)+120);
-        c.fillText("Peças O: "+o, (tela.width/2)-50, (tela.height/2)+120);
-        c.fillStyle = "#F538FF";
-        c.beginPath();
-        c.moveTo(((tela.width/2)+20),((tela.height/2)+100));
-        c.lineTo(((tela.width/2)+20),((tela.height/2)+120));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+120));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+100));
-        c.fill();
-        c.closePath();
-        //L
-        c.fillStyle = "white";
-        c.strokeText("Peças L: "+l, (tela.width/2)-50, (tela.height/2)+150);
-        c.fillText("Peças L: "+l, (tela.width/2)-50, (tela.height/2)+150);
-        c.fillStyle = "#0DFF72";
-        c.beginPath();
-        c.moveTo(((tela.width/2)+20),((tela.height/2)+140));
-        c.lineTo(((tela.width/2)+20),((tela.height/2)+150));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+150));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+130));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+130));
-        c.lineTo(((tela.width/2)+40),((tela.height/2)+140));
-        c.fill();
-        c.closePath();
-        //I
-        c.fillStyle = "white";
-        c.strokeText("Peças I: "+i, (tela.width/2)-50, (tela.height/2)+180);
-        c.fillText("Peças I: "+i, (tela.width/2)-50, (tela.height/2)+180);
-        c.fillStyle = "#3877FF";
-        c.beginPath();
-        c.moveTo(((tela.width/2)+20),((tela.height/2)+165));
-        c.lineTo(((tela.width/2)+60),((tela.height/2)+165));
-        c.lineTo(((tela.width/2)+60),((tela.height/2)+175));
-        c.lineTo(((tela.width/2)+20),((tela.height/2)+175));
-        c.fill();
-
-        //J
-        c.fillStyle = "white";
-        c.strokeText("Peças J: "+j, (tela.width/2)-50, (tela.height/2)+210);
-        c.fillText("Peças J: "+j, (tela.width/2)-50, (tela.height/2)+210);
-        c.fillStyle = "#0DC2FF";
-        c.beginPath();
-        c.moveTo(((tela.width/2)+20),((tela.height/2)+190));
-        c.lineTo(((tela.width/2)+20),((tela.height/2)+210));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+210));
-        c.lineTo(((tela.width/2)+50),((tela.height/2)+200));
-        c.lineTo(((tela.width/2)+30),((tela.height/2)+200));
-        c.lineTo(((tela.width/2)+30),((tela.height/2)+190));
-        c.lineTo(((tela.width/2)+20),((tela.height/2)+190));
-        c.fill();
-        c.closePath();
-
-        c.font = "18px Comic Sans MS";
-        c.fillStyle = "white";
-        c.fillText("Scores:" + scores + " Linhas eliminadas:"+ linhasApagadas, (tela.width/2), ((tela.height/2)+240));
         setTimeout(()=>{
             musica.play();
-        }, 4000 );
+        }, 3500 );
+        desenhaPecas();
 
     }
     // exibição de scores e level
@@ -513,28 +392,7 @@ function gerarPeca(){
     pcAt = proxPc;
     proxPc = Math.floor(Math.random() * PECAS.length);
     var r = pcAt;
-
-    if(r==0){
-        z++;
-    }
-    if(r==1){
-        s++;
-    }
-    if(r==2){
-        t++;
-    }
-    if(r==3){
-        o++;
-    }
-    if(r==4){
-        l++;
-    }
-    if(r==5){
-        i++;
-    }
-    if(r==6){
-        j++;
-    }
+    pecas[r]++;
 
     peca = {
 
@@ -556,7 +414,7 @@ function descerPeca(){
     var agora = Date.now();
     var delta = agora - inicioDescida;
     //tempo de descida com variavel
-    if (delta > tempoDescida-level*130) {
+    if (delta > tempoDescida-level*130 ) {
         moverAbaixo();
         inicioDescida = Date.now();
     }
@@ -567,6 +425,7 @@ function descerPeca(){
 }
 
 function moverAbaixo(){
+
     if (!colisao(0, 1, peca.tetraminoAtivo)) {
         apagarPeca();
         peca.y++;
@@ -666,10 +525,32 @@ function travarPeca(){
             linhaCheia = linhaCheia && (tabuleiro[i][j] != VAGO);
         }
 
-        if(linhaCheia){
+
+        if (linhaCheia) {
+            for (var y = i; y > 1; y--) {
+                for (var j = 0; j < COLUNA; j++) {
+                    tabuleiro[y][j] = tabuleiro[y-1][j];
+                }
+            }
+
+            for (var j = 0; j < COLUNA; j++) {
+                tabuleiro[0][j] = VAGO;
+            }
+            linhasApagadas++
             linhasCheias++;
             linhaEl.play();
+            if(linhasApagadas>0 && linhasApagadas%10===0) {
+                level++
+                levelUp.play();
+                // troca a musica a cada 2 levels e para de trocar no level 7
+                if (level % 2 !== 0 && level <= 7) {
+                    cont++
+                    musica.src = "./sons/musica" + cont + ".mp3";
+                    musica.play();
+                }
+            }
         }
+
     }
     if(linhasCheias==1){
         scores+=(100*level);
@@ -684,46 +565,11 @@ function travarPeca(){
         scores+=(800*level);
         tetris.play()
     }
-    lCTotal += linhasCheias;
     linhasCheias=0;
-    if(lCTotal>=10){
-        level++
-        levelUp.play()
-        // troca a musica a cada 2 levels e para de trocar no level 7
-        if(level%2!==0 && level<=7){
-            cont++
-            musica.src = "./sons/musica"+cont+".mp3";
-            musica.play();
-        }
-        lCTotal=0;
-    }
-    for (var i = 0; i < LINHA; i++) {
-        var linhaCheia = true;
-
-        for (var j = 0; j < COLUNA; j++) {
-            linhaCheia = linhaCheia && (tabuleiro[i][j] != VAGO);
-        }
-
-
-        if (linhaCheia) {
-            for (var y = i; y > 1; y--) {
-                for (var j = 0; j < COLUNA; j++) {
-                    tabuleiro[y][j] = tabuleiro[y-1][j];
-                }
-            }
-
-            for (var j = 0; j < COLUNA; j++) {
-                tabuleiro[0][j] = VAGO;
-            }
-            linhasApagadas++
-        }
-    }
-
     desenharTabuleiro();
 }
-
 function rodarPeca(){
-    var proximoPadrao = peca.tetramino[(peca.tetraminoN + 1) % peca.tetramino.length];
+    var proximoPadrao = Math.abs(peca.tetramino[(peca.tetraminoN +1) % peca.tetramino.length]);
     var recuo = 0;
 
     if (colisao(0, 0, proximoPadrao)) {
@@ -756,7 +602,9 @@ function controlarPeca(evento) {
             pecaVi.play();
             inicioDescida = Date.now();
         } else if (tecla == 90) {
+            rodarPeca();
             pecaVi.play();
+            inicioDescida = Date.now();
             // Roda a peça para a esquerda
         } else if (tecla == 39) {
             moverDireita();
@@ -768,10 +616,133 @@ function controlarPeca(evento) {
             //bonus de pontos para a descida acelerada
             scores++;
         } else if (tecla == 32) {
-            moverAbaixo();
+            // SOLUÇÃO NÃO DEFINITIVA
+            for(i=0; i<2; i++){
+                moverAbaixo();
+            }
             mov.play();
             // Queda forte e bonus
             scores += 2;
         }
     }
+}
+function desenhaPecas() {
+    c.fillStyle = "#202028";
+    c.fillRect(1, 1, 298, 150);
+    c.fillStyle = "#1C1C1C";
+    c.fillRect(300, 200, 300, 350);
+    c.textAlign = "center";
+    c.font = "30px Comic Sans MS";
+    c.fillStyle = "white";
+
+    c.strokeText("Game over!", tela.width/2, (tela.height/2)-40);
+    c.fillText("Game over!", tela.width/2, (tela.height/2)-40);
+    c.font = "20px Comic Sans MS";
+    c.fillText("Level máximo alcançado: "+level, tela.width/2, (tela.height/2)-10);
+    //Z
+
+    c.strokeText("Peças Z: "+pecas[0], (tela.width/2)-50, (tela.height/2)+30);
+    c.fillText("Peças Z: "+pecas[0], (tela.width/2)-50, (tela.height/2)+30);
+    c.fillStyle = "#FFE138";
+    c.beginPath();
+    c.moveTo(((tela.width/2)+20),((tela.height/2)+10));
+    c.lineTo(((tela.width/2)+20),((tela.height/2)+20));
+    c.lineTo(((tela.width/2)+30),((tela.height/2)+20));
+    c.lineTo(((tela.width/2)+30),((tela.height/2)+30));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+30));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+20));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+20));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+10));
+    c.fill();
+    c.closePath();
+    //S
+    c.fillStyle = "white";
+    c.strokeText("Peças S: "+pecas[1], (tela.width/2)-50, (tela.height/2)+60);
+    c.fillText("Peças S: "+pecas[1], (tela.width/2)-50, (tela.height/2)+60);
+    c.fillStyle = "#FF8E0D";
+    c.beginPath();
+    c.moveTo(((tela.width/2)+20),((tela.height/2)+50));
+    c.lineTo(((tela.width/2)+20),((tela.height/2)+60));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+60));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+50));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+50));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+40));
+    c.lineTo(((tela.width/2)+30),((tela.height/2)+40));
+    c.lineTo(((tela.width/2)+30),((tela.height/2)+50));
+    c.fill();
+    c.closePath();
+    //T
+    c.fillStyle = "white";
+    c.strokeText("Peças T: "+pecas[2], (tela.width/2)-50, (tela.height/2)+90);
+    c.fillText("Peças T: "+pecas[2], (tela.width/2)-50, (tela.height/2)+90);
+    c.fillStyle = "#FF0D72";
+    c.beginPath();
+    c.moveTo(((tela.width/2)+20),((tela.height/2)+80));
+    c.lineTo(((tela.width/2)+20),((tela.height/2)+90));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+90));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+80));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+80));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+70));
+    c.lineTo(((tela.width/2)+30),((tela.height/2)+70));
+    c.lineTo(((tela.width/2)+30),((tela.height/2)+80));
+    c.fill();
+    c.closePath();
+    //O
+    c.fillStyle = "white";
+    c.strokeText("Peças O: "+pecas[3], (tela.width/2)-50, (tela.height/2)+120);
+    c.fillText("Peças O: "+pecas[3], (tela.width/2)-50, (tela.height/2)+120);
+    c.fillStyle = "#F538FF";
+    c.beginPath();
+    c.moveTo(((tela.width/2)+20),((tela.height/2)+100));
+    c.lineTo(((tela.width/2)+20),((tela.height/2)+120));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+120));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+100));
+    c.fill();
+    c.closePath();
+    //L
+    c.fillStyle = "white";
+    c.strokeText("Peças L: "+pecas[4], (tela.width/2)-50, (tela.height/2)+150);
+    c.fillText("Peças L: "+pecas[4], (tela.width/2)-50, (tela.height/2)+150);
+    c.fillStyle = "#0DFF72";
+    c.beginPath();
+    c.moveTo(((tela.width/2)+20),((tela.height/2)+140));
+    c.lineTo(((tela.width/2)+20),((tela.height/2)+150));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+150));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+130));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+130));
+    c.lineTo(((tela.width/2)+40),((tela.height/2)+140));
+    c.fill();
+    c.closePath();
+    //I
+    c.fillStyle = "white";
+    c.strokeText("Peças I: "+pecas[5], (tela.width/2)-50, (tela.height/2)+180);
+    c.fillText("Peças I: "+pecas[5], (tela.width/2)-50, (tela.height/2)+180);
+    c.fillStyle = "#3877FF";
+    c.beginPath();
+    c.moveTo(((tela.width/2)+20),((tela.height/2)+165));
+    c.lineTo(((tela.width/2)+60),((tela.height/2)+165));
+    c.lineTo(((tela.width/2)+60),((tela.height/2)+175));
+    c.lineTo(((tela.width/2)+20),((tela.height/2)+175));
+    c.fill();
+
+    //J
+    c.fillStyle = "white";
+    c.strokeText("Peças J: "+pecas[6], (tela.width/2)-50, (tela.height/2)+210);
+    c.fillText("Peças J: "+pecas[6], (tela.width/2)-50, (tela.height/2)+210);
+    c.fillStyle = "#0DC2FF";
+    c.beginPath();
+    c.moveTo(((tela.width/2)+20),((tela.height/2)+190));
+    c.lineTo(((tela.width/2)+20),((tela.height/2)+210));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+210));
+    c.lineTo(((tela.width/2)+50),((tela.height/2)+200));
+    c.lineTo(((tela.width/2)+30),((tela.height/2)+200));
+    c.lineTo(((tela.width/2)+30),((tela.height/2)+190));
+    c.lineTo(((tela.width/2)+20),((tela.height/2)+190));
+    c.fill();
+    c.closePath();
+
+    c.font = "18px Comic Sans MS";
+    c.fillStyle = "white";
+    c.fillText("Scores:" + scores + " Linhas eliminadas:"+ linhasApagadas, (tela.width/2), ((tela.height/2)+240));
+    return;
 }
