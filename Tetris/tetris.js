@@ -176,6 +176,7 @@ const TAMANHO = 30;
 const VAGO = "black";
 // Carrega os efeitos sonoros
 var musica = document.getElementById("musica");
+musica.play();
 const levelUp= new Audio();
 levelUp.src = "./sons/levelUp.wav";
 
@@ -198,7 +199,7 @@ const tetris = new Audio();
 tetris.src = "./sons/tetris.wav";
 
 var peca;
-var tabuleiro = [0];
+var tabuleiro = [];
 var cont = 1;
 var inicioDescida;
 var tempoDescida = 1000;
