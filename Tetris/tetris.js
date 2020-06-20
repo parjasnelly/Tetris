@@ -174,10 +174,33 @@ const LINHA = 20;
 const COLUNA = 10;
 const TAMANHO = 30;
 const VAGO = "black";
+// Carrega os efeitos sonoros
+var musica = document.getElementById("musica");
+musica.play();
+const levelUp= new Audio();
+levelUp.src = "./sons/levelUp.wav";
+
+const encaixe= new Audio();
+encaixe.src = "./sons/encaixe.wav";
+
+const linhaEl= new Audio();
+linhaEl.src = "./sons/linhaEl.wav";
+
+const pecaVi= new Audio();
+pecaVi.src = "./sons/pecaVi.wav";
+
+const gameOver = new Audio();
+gameOver.src = "./sons/gameOver.mp3";
+
+const mov = new Audio();
+mov.src = "./sons/mov.wav";
+
+const tetris = new Audio();
+tetris.src = "./sons/tetris.wav";
 
 var peca;
 var tabuleiro = [];
-
+var cont = 1;
 var inicioDescida;
 var tempoDescida = 1000;
 var fimDeJogo = false;
@@ -231,6 +254,9 @@ function desenharTabuleiro(){
 
 function desenharQuadrado(x, y, cor){
     if(fimDeJogo){
+        musica.pause();
+        musica.src = "./sons/ranking.mp3"
+        gameOver.play();
         // escreve o game over
         c.fillStyle = "#202028";
         c.fillRect(1, 1, 298, 150);
@@ -349,6 +375,10 @@ function desenharQuadrado(x, y, cor){
         c.font = "18px Comic Sans MS";
         c.fillStyle = "white";
         c.fillText("Scores:" + scores + " Linhas eliminadas:"+ linhasApagadas, (tela.width/2), ((tela.height/2)+240));
+        setTimeout(()=>{
+            musica.play();
+        }, 4000 );
+
     }
     // exibição de scores e level
     if(!fimDeJogo) {
@@ -544,6 +574,7 @@ function moverAbaixo(){
     } else {
         travarPeca();
         gerarPeca();
+        encaixe.play();
     }
 
 }
@@ -636,7 +667,8 @@ function travarPeca(){
         }
 
         if(linhaCheia){
-            linhasCheias++
+            linhasCheias++;
+            linhaEl.play();
         }
     }
     if(linhasCheias==1){
@@ -648,13 +680,21 @@ function travarPeca(){
     if(linhasCheias==3){
         scores+=(500*level);
     }
-    if(linhasCheias==4){
+    if(linhasCheias>=4){
         scores+=(800*level);
+        tetris.play()
     }
     lCTotal += linhasCheias;
     linhasCheias=0;
     if(lCTotal>=10){
         level++
+        levelUp.play()
+        // troca a musica a cada 2 levels e para de trocar no level 7
+        if(level%2!==0 && level<=7){
+            cont++
+            musica.src = "./sons/musica"+cont+".mp3";
+            musica.play();
+        }
         lCTotal=0;
     }
     for (var i = 0; i < LINHA; i++) {
@@ -675,7 +715,7 @@ function travarPeca(){
             for (var j = 0; j < COLUNA; j++) {
                 tabuleiro[0][j] = VAGO;
             }
-            linhasApagadas+=1
+            linhasApagadas++
         }
     }
 
@@ -710,20 +750,26 @@ function controlarPeca(evento) {
         if (tecla == 37) {
             moverEsquerda();
             inicioDescida = Date.now();
+            mov.play();
         } else if (tecla == 38) {
             rodarPeca();
+            pecaVi.play();
             inicioDescida = Date.now();
         } else if (tecla == 90) {
+            pecaVi.play();
             // Roda a peça para a esquerda
         } else if (tecla == 39) {
             moverDireita();
             inicioDescida = Date.now();
+            mov.play();
         } else if (tecla == 40) {
             moverAbaixo();
+            mov.play();
             //bonus de pontos para a descida acelerada
             scores++;
         } else if (tecla == 32) {
             moverAbaixo();
+            mov.play();
             // Queda forte e bonus
             scores += 2;
         }
