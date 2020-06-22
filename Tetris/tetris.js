@@ -198,6 +198,9 @@ mov.src = "./sons/mov.wav";
 const tetris = new Audio();
 tetris.src = "./sons/tetris.wav";
 
+const quedaForte = new Audio();
+quedaForte.src = "./sons/quedaForte.wav";
+
 var peca;
 var tabuleiro = [];
 var cont = 1;
@@ -431,10 +434,12 @@ function moverAbaixo(){
         apagarPeca();
         peca.y++;
         desenharPeca();
+        return true
     } else {
         travarPeca();
         gerarPeca();
         encaixe.play();
+        return false
     }
 
 }
@@ -539,7 +544,7 @@ function travarPeca(){
             }
             linhasApagadas++
             linhasCheias++;
-            linhaEl.play();
+
             if(linhasApagadas>0 && linhasApagadas%10===0) {
                 level++
                 levelUp.play();
@@ -555,12 +560,15 @@ function travarPeca(){
     }
     if(linhasCheias==1){
         scores+=(100*level);
+        linhaEl.play();
     }
     if(linhasCheias==2){
         scores+=(300*level);
+        linhaEl.play();
     }
     if(linhasCheias==3){
         scores+=(500*level);
+        linhaEl.play();
     }
     if(linhasCheias>=4){
         scores+=(800*level);
@@ -617,13 +625,10 @@ function controlarPeca(evento) {
             //bonus de pontos para a descida acelerada
             scores++;
         } else if (tecla == 32) {
-            // SOLUÇÃO NÃO DEFINITIVA
-            for(i=0; i<2; i++){
-                moverAbaixo();
+            quedaForte.play();
+            while(moverAbaixo()){
+                scores += 2;
             }
-            mov.play();
-            // Queda forte e bonus
-            scores += 2;
         }
     }
 }
