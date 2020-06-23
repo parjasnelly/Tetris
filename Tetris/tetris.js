@@ -200,7 +200,8 @@ tetris.src = "./sons/tetris.wav";
 
 const quedaForte = new Audio();
 quedaForte.src = "./sons/quedaForte.wav";
-
+var executou = false;
+var ranking = [];
 var peca;
 var tabuleiro = [];
 var cont = 1;
@@ -219,7 +220,7 @@ var pecas = [];
 for(i=0; i<7;i++){
     pecas[i]=0;
 }
-
+recuperaDados();
 onkeydown = controlarPeca;
 
 iniciarTabuleiro();
@@ -257,11 +258,11 @@ function desenharQuadrado(x, y, cor){
         musica.pause();
         musica.src = "./sons/ranking.mp3"
         gameOver.play();
+        guardaDados();
         setTimeout(()=>{
             musica.play();
         }, 3500 );
         desenhaPecas();
-
     }
     // exibição de scores e level
     if(!fimDeJogo) {
@@ -418,7 +419,7 @@ function descerPeca(){
     var agora = Date.now();
     var delta = agora - inicioDescida;
     //tempo de descida com variavel
-    if (delta > tempoDescida-level*130 ) {
+    if (delta > tempoDescida-level*130) {
         moverAbaixo();
         inicioDescida = Date.now();
     }
@@ -577,9 +578,17 @@ function travarPeca(){
     linhasCheias=0;
     desenharTabuleiro();
 }
-function rodarPeca(){
-    var proximoPadrao = Math.abs(peca.tetramino[(peca.tetraminoN +1) % peca.tetramino.length]);
+function rodarPeca(esquerda){
+    var proximoPadrao;
     var recuo = 0;
+    if(esquerda){
+        if((peca.tetraminoN-1)===-1){
+            peca.tetraminoN = 4
+        }
+        proximoPadrao = peca.tetramino[(peca.tetraminoN -1) % peca.tetramino.length];
+    } else{
+        proximoPadrao = peca.tetramino[(peca.tetraminoN +1) % peca.tetramino.length];
+    }
 
     if (colisao(0, 0, proximoPadrao)) {
         if (peca.x > COLUNA/2) {
@@ -592,7 +601,11 @@ function rodarPeca(){
     if (!colisao(recuo, 0, proximoPadrao)) {
         apagarPeca();
         peca.x += recuo;
-        peca.tetraminoN = (peca.tetraminoN + 1) % peca.tetramino.length;
+        if(esquerda){
+            peca.tetraminoN = (peca.tetraminoN - 1) % peca.tetramino.length;
+        } else{
+            peca.tetraminoN = (peca.tetraminoN + 1) % peca.tetramino.length;
+        }
         peca.tetraminoAtivo = peca.tetramino[peca.tetraminoN];
         desenharPeca();
     }
@@ -608,10 +621,10 @@ function controlarPeca(evento) {
             mov.play();
         } else if (tecla == 38) {
             rodarPeca();
-            pecaVi.play();
+            pecaVi.play(false);
             inicioDescida = Date.now();
         } else if (tecla == 90) {
-            rodarPeca();
+            rodarPeca(true);
             pecaVi.play();
             inicioDescida = Date.now();
             // Roda a peça para a esquerda
@@ -750,5 +763,41 @@ function desenhaPecas() {
     c.font = "18px Comic Sans MS";
     c.fillStyle = "white";
     c.fillText("Scores:" + scores + " Linhas eliminadas:"+ linhasApagadas, (tela.width/2), ((tela.height/2)+240));
+
     return;
+}
+function guardaDados(){
+    if(!executou) {
+        executou = true
+        do {
+            user = prompt("Digite suas iniciais com SOMENTE 3 caracteres");
+        }while (user.length>3)
+
+        ranking.push({
+            nome: user,
+            score: scores,
+        });
+        var aux;
+        //bubble sort
+        if (ranking.length > 1) {
+            for (var i = 0; i < ranking.length - 1; i++) {
+                for (var j = 0; j < ranking.length - 1 - i; j++) {
+                    if (ranking[j].score < ranking[j + 1].score) {
+                        aux = ranking[j];
+                        ranking[j] = ranking[j + 1];
+                        ranking[j + 1] = aux;
+                    }
+                }
+            }
+        }
+
+        localStorage.setItem("ranking", JSON.stringify(ranking));
+    }
+    return;
+}
+function recuperaDados(){
+    ranking = JSON.parse(localStorage.getItem("ranking"));
+    if(ranking==null){
+        ranking=[];
+    }
 }
