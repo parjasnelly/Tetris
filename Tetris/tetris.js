@@ -177,6 +177,7 @@ const VAGO = "black";
 // Carrega os efeitos sonoros
 var musica = document.getElementById("musica");
 musica.play();
+musica.volume = 0.8;
 const levelUp= new Audio();
 levelUp.src = "./sons/levelUp.wav";
 
@@ -201,7 +202,7 @@ tetris.src = "./sons/tetris.wav";
 const quedaForte = new Audio();
 quedaForte.src = "./sons/quedaForte.wav";
 var executou = false;
-var ranking = [];
+var ranking = [5];
 var peca;
 var tabuleiro = [];
 var cont = 1;
@@ -215,6 +216,8 @@ var linhasApagadas = 0;
 var tela = document.getElementById("tela");
 var c = tela.getContext("2d");
 var proxPc = Math.floor(Math.random() * PECAS.length);
+var proxPc2 = Math.floor(Math.random() * PECAS.length);
+var proxPc3 = Math.floor(Math.random() * PECAS.length);
 var pecas = [];
 // faz um "parseInt no vetor contador de peças"
 for(i=0; i<7;i++){
@@ -263,6 +266,15 @@ function desenharQuadrado(x, y, cor){
             musica.play();
         }, 3500 );
         desenhaPecas();
+        recuperaDados();
+        c.font = "25px Comic Sans MS";
+        c.fillStyle = "white";
+        c.fillText("RANKING", 140, 135);
+        c.fillText(ranking[1].nome+" "+ranking[1].score, 140, 210);
+        c.fillText(ranking[2].nome+" "+ranking[2].score, 140, 255);
+        c.fillText(ranking[3].nome+" "+ranking[3].score, 140, 300);
+        c.fillText(ranking[4].nome+" "+ranking[4].score, 140, 345);
+        c.fillText(ranking[5].nome+" "+ranking[5].score, 140, 390);
     }
     // exibição de scores e level
     if(!fimDeJogo) {
@@ -281,7 +293,7 @@ function desenharQuadrado(x, y, cor){
     c.fillRect(602, 1, 298, 100);
     c.font = "25px Comic Sans MS";
     c.fillStyle = "white";
-    c.fillText("Próxima peça:", 610, 45);
+    c.fillText("Próximas peças:", 610, 45);
 
     if(proxPc===0){
 
@@ -385,7 +397,210 @@ function desenharQuadrado(x, y, cor){
     }
 
     c.fillStyle = cor;
+    if(proxPc2===0){
 
+        c.fillStyle = "#202028";
+        c.fillRect(610, 200, 160 , 320);
+        c.fillStyle = "#FFE138"
+        c.beginPath();
+        c.moveTo(610, 200);
+        c.lineTo(670, 200);
+        c.lineTo(670, 240);
+        c.lineTo(700, 240);
+        c.lineTo(700, 270);
+        c.lineTo(640, 270);
+        c.lineTo(640, 240);
+        c.lineTo(610, 240);
+        c.fill();
+    }
+    if(proxPc2==1){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 200, 160 , 320);
+        c.fillStyle = "#FF8E0D"
+        c.beginPath();
+        c.moveTo(610, 240);
+        c.lineTo(610, 270);
+        c.lineTo(670, 270);
+        c.lineTo(670, 240);
+        c.lineTo(700, 240);
+        c.lineTo(700, 200);
+        c.lineTo(640, 200);
+        c.lineTo(640, 240);
+        c.fill();
+    
+    }
+    if(proxPc2==2){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 200, 160 , 320);
+        c.fillStyle = "#FF0D72"
+        c.beginPath();
+        c.moveTo(610, 270);
+        c.lineTo(700, 270);
+        c.lineTo(700, 240);
+        c.lineTo(670, 240);
+        c.lineTo(670, 200);
+        c.lineTo(640, 200);
+        c.lineTo(640, 240);
+        c.lineTo(610, 240);
+        c.fill();
+    
+    }
+    if(proxPc2==3){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 200, 160 , 320);
+        c.fillStyle = "#F538FF"
+        c.beginPath();
+        c.moveTo(610, 200);
+        c.lineTo(610, 270);
+        c.lineTo(670, 270);
+        c.lineTo(670, 200);
+        c.fill();
+    
+    }
+    if(proxPc2==4){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 200, 160 , 320);
+        c.fillStyle = "#0DFF72"
+        c.beginPath();
+        c.moveTo(610, 270);
+        c.lineTo(700, 270);
+        c.lineTo(700, 200);
+        c.lineTo(670, 200);
+        c.lineTo(670, 240);
+        c.lineTo(610, 240);
+        c.fill();
+    
+    }
+    if(proxPc2==5){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 200, 160 , 320);
+        c.fillStyle = "#3877FF"
+        c.beginPath();
+        c.moveTo(610, 200);
+        c.lineTo(610, 320);
+        c.lineTo(640, 320);
+        c.lineTo(640, 200);
+        c.fill();
+    
+    }
+    if(proxPc2==6){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 200, 160 , 320);
+        c.fillStyle = "#0DC2FF"
+        c.beginPath();
+        c.moveTo(610, 200);
+        c.lineTo(610, 270);
+        c.lineTo(700, 270);
+        c.lineTo(700, 240);
+        c.lineTo(640, 240);
+        c.lineTo(640, 200);
+        c.fill();
+    
+    }
+    c.fillStyle = cor;
+    
+    if(proxPc3 ===0){
+
+        c.fillStyle = "#202028";
+        c.fillRect(610, 360, 160 , 480);
+        c.fillStyle = "#FFE138"
+        c.beginPath();
+        c.moveTo(610, 360);
+        c.lineTo(670, 360);
+        c.lineTo(670, 390);
+        c.lineTo(700, 390);
+        c.lineTo(700, 420);
+        c.lineTo(640, 420);
+        c.lineTo(640, 390);
+        c.lineTo(610, 390);
+        c.fill();
+    }
+    if(proxPc3 ==1){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 360, 160 , 480);
+        c.fillStyle = "#FF8E0D"
+        c.beginPath();
+        c.moveTo(610, 390);
+        c.lineTo(610, 420);
+        c.lineTo(670, 420);
+        c.lineTo(670, 390);
+        c.lineTo(700, 390);
+        c.lineTo(700, 360);
+        c.lineTo(640, 360);
+        c.lineTo(640, 390);
+        c.fill();
+    
+    }
+    if(proxPc3 ==2){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 360, 160 , 480);
+        c.fillStyle = "#FF0D72"
+        c.beginPath();
+        c.moveTo(610, 420);
+        c.lineTo(700, 420);
+        c.lineTo(700, 390);
+        c.lineTo(670, 390);
+        c.lineTo(670, 360);
+        c.lineTo(640, 360);
+        c.lineTo(640, 390);
+        c.lineTo(610, 390);
+        c.fill();
+    
+    }
+    if(proxPc3 ==3){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 360, 160 , 480);
+        c.fillStyle = "#F538FF"
+        c.beginPath();
+        c.moveTo(610, 360);
+        c.lineTo(610, 420);
+        c.lineTo(670, 420);
+        c.lineTo(670, 360);
+        c.fill();
+    
+    }
+    if(proxPc3 ==4){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 360, 160 , 480);
+        c.fillStyle = "#0DFF72"
+        c.beginPath();
+        c.moveTo(610, 420);
+        c.lineTo(700, 420);
+        c.lineTo(700, 360);
+        c.lineTo(670, 360);
+        c.lineTo(670, 390);
+        c.lineTo(610, 390);
+        c.fill();
+    
+    }
+    if(proxPc3 ==5){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 360, 160 , 480);
+        c.fillStyle = "#3877FF"
+        c.beginPath();
+        c.moveTo(610, 360);
+        c.lineTo(610, 480);
+        c.lineTo(640, 480);
+        c.lineTo(640, 360);
+        c.fill();
+    
+    }
+    if(proxPc3 ==6){
+        c.fillStyle = "#202028";
+        c.fillRect(610, 360, 160 , 480);
+        c.fillStyle = "#0DC2FF"
+        c.beginPath();
+        c.moveTo(610, 360);
+        c.lineTo(610, 420);
+        c.lineTo(700, 420);
+        c.lineTo(700, 390);
+        c.lineTo(640, 390);
+        c.lineTo(640, 360);
+        c.fill();
+    
+    }
+    
+    c.fillStyle = cor;
     c.fillRect(x*TAMANHO+300, y*TAMANHO, TAMANHO, TAMANHO);
 
     c.strokeStyle = "black";
@@ -395,7 +610,9 @@ function desenharQuadrado(x, y, cor){
 
 function gerarPeca(){
     pcAt = proxPc;
-    proxPc = Math.floor(Math.random() * PECAS.length);
+    proxPc = proxPc2
+    proxPc2 = proxPc3;
+    proxPc3 = Math.floor(Math.random() * PECAS.length);
     var r = pcAt;
     pecas[r]++;
 
@@ -411,7 +628,6 @@ function gerarPeca(){
 
     peca.tetraminoAtivo = peca.tetramino[peca.tetraminoN];
 
-
 }
 
 
@@ -419,7 +635,7 @@ function descerPeca(){
     var agora = Date.now();
     var delta = agora - inicioDescida;
     //tempo de descida com variavel
-    if (delta > tempoDescida-level*130) {
+    if (delta > tempoDescida-level*107) {
         moverAbaixo();
         inicioDescida = Date.now();
     }
@@ -766,26 +982,27 @@ function desenhaPecas() {
 
     return;
 }
+
 function guardaDados(){
     if(!executou) {
         executou = true
         do {
             user = prompt("Digite suas iniciais com SOMENTE 3 caracteres");
-        }while (user.length>3)
-
+        }while (user.length>3 || user.length<3)
         ranking.push({
             nome: user,
             score: scores,
         });
+
         var aux;
         //bubble sort
         if (ranking.length > 1) {
-            for (var i = 0; i < ranking.length - 1; i++) {
-                for (var j = 0; j < ranking.length - 1 - i; j++) {
-                    if (ranking[j].score < ranking[j + 1].score) {
+            for (var i = 0; i <= ranking.length - 1; i++){
+                for (var j = ranking.length-1; j >= 1; j--){
+                    if (ranking[j-1].score < ranking[j].score) {
                         aux = ranking[j];
-                        ranking[j] = ranking[j + 1];
-                        ranking[j + 1] = aux;
+                        ranking[j] = ranking[j-1];
+                        ranking[j-1] = aux;
                     }
                 }
             }
@@ -794,7 +1011,7 @@ function guardaDados(){
         localStorage.setItem("ranking", JSON.stringify(ranking));
     }
     return;
-}
+    }
 function recuperaDados(){
     ranking = JSON.parse(localStorage.getItem("ranking"));
     if(ranking==null){
